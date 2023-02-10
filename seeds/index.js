@@ -6,16 +6,8 @@ const seed = async () => {
     const users = await User.bulkCreate(
         [
             {
-                email: "joe@joe.joe",
+                email: "jason@woo.com",
                 password: "password",
-            },
-            {
-                email: "shiva@joe.joe",
-                password: "iAmCatMeow",
-            },
-            {
-                email: "bahamut@joe.joe",
-                password: "iAmDragonRawr",
             },
         ],
         {
@@ -27,18 +19,6 @@ const seed = async () => {
         {
             blogs: "I love my cats!",
             UserId: 1,
-        },
-        {
-            chirp: "Moar treats plz",
-            UserId: 3,
-        },
-        {
-            chirp: "New Rule: no more car rides",
-            UserId: 3,
-        },
-        {
-            chirp: "Hoomans, go ahead, pet the tummy. It not trap",
-            UserId: 2,
         },
     ]);
     process.exit(1);

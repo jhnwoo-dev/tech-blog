@@ -14,7 +14,7 @@ document.querySelector("#new-blog-form").addEventListener("submit", (e) => {
         if (res.ok) {
             location.reload();
         } else {
-            alert("trumpet sound");
+            alert("An error has occured");
         }
     });
 });
