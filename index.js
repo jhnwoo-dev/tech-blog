@@ -11,7 +11,7 @@ const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const app = express();
 const PORT = process.env.PORT || 3001;
 // Requiring our models for syncing
-const { User, Blogs } = require("./models");
+const { User, Blog, Comment } = require("./models");
 
 const sess = {
     secret: process.env.SESSION_SECRET,

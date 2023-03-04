@@ -1,17 +1,21 @@
 const express = require("express");
 const router = express.Router();
-const { Blogs, User, Comments } = require("../models");
+const { Blog, User, Comment } = require("../models");
 
 router.get("/", (req, res) => {
-    Blogs.findAll({
-        include: [User, Comments],
-    }).then((blogsData) => {
-        console.log(blogsData);
-        const hbsBlogs = blogsData.map((blogs) => blogs.toJSON());
+    Blog.findAll({
+        include: [User, Comment],
+        order: [["id", "DESC"]],
+    }).then((blogData) => {
+        console.log(blogData);
+        const hbsBlogs = blogData.map((blog) => blog.toJSON());
         let email;
+        console.log("====================");
         if (req.session.userId) {
-            email = req.session.email;
+            email = req.session.userEmail;
+            console.log(req.session.userEmail);
         }
+        console.log("====================");
         res.render("home", {
             allBlogs: hbsBlogs,
             email: email,
@@ -23,17 +27,17 @@ router.get("/dashboard", (req, res) => {
     if (!req.session.userId) {
         return res.redirect("/login");
     }
-    Blogs.findAll({
-        include: [User, Comments],
+    Blog.findAll({
+        include: [User, Comment],
         order: [["id", "DESC"]],
         where: { UserId: req.session.userId },
-    }).then((blogsData) => {
-        const hbsBlogs = blogsData.map((blogs) => blogs.toJSON());
+    }).then((blogData) => {
+        const hbsBlogs = blogData.map((blog) => blog.toJSON());
         let email;
         if (req.session.userId) {
-            email = req.session.email;
+            email = req.session.userEmail;
         }
-        res.render("home", {
+        res.render("dashboard", {
             allBlogs: hbsBlogs,
             email: email,
         });

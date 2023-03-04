@@ -1,10 +1,12 @@
 <h1>Login</h1>
 
-<form id="loginForm" class="forms">
-    <input type="text" id="loginEmail" placeholder="email">
-    <input type="password" id="loginPassword" placeholder="password" >
-    <button>Login</button>
-</form>
-    <button id="signup-redirect">Sign Up Instead!</button>
+<section class="d-flex flex-column justify-content-center align-items-center">
+    <form id="login-form" class="d-flex flex-column justify-content-center align-items-center" >
+        <input type="text" id="login-email" placeholder="email" class="spacing">
+        <input type="password" id="login-password" placeholder="password"  class="spacing" >
+        <button id="login-btn"  class="spacing btn btn-primary">Login</button>
+    </form>
+        <button id="signup-redirect" class="spacing btn btn-primary">Sign Up Instead!</button>
+</section>
 
 <script src="/js/login.js"></script>

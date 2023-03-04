@@ -1,10 +1,9 @@
-document.querySelector("#loginForm").addEventListener("submit", (e) => {
+document.querySelector("#login-form").addEventListener("submit", (e) => {
     e.preventDefault();
     const loginObj = {
-        email: document.querySelector("#loginEmail").value,
-        password: document.querySelector("#loginPassword").value,
+        email: document.querySelector("#login-email").value,
+        password: document.querySelector("#login-password").value,
     };
-    console.log(loginObj);
     fetch("/api/users/login", {
         method: "POST",
         body: JSON.stringify(loginObj),
@@ -15,7 +14,7 @@ document.querySelector("#loginForm").addEventListener("submit", (e) => {
         if (res.ok) {
             location.href = "/dashboard";
         } else {
-            alert("An error has occured.");
+            location.href = "/signup";
         }
     });
 });

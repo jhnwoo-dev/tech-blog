@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const { User, Blogs, Comments } = require("../models");
+const { User, Blog, Comment } = require("../models");
 
 //get all comments
 router.get("/", (req, res) => {
-    Comments.findAll()
-        .then((commentsData) => {
-            res.json(commentsData);
+    Comment.findAll()
+        .then((commentData) => {
+            res.json(commentData);
         })
         .catch((err) => {
             console.log(err);
@@ -16,11 +16,11 @@ router.get("/", (req, res) => {
 
 //get comment by id
 router.get("/:id", (req, res) => {
-    Comments.findByPk(req.params.id, {
-        include: [User, Blogs],
+    Comment.findByPk(req.params.id, {
+        include: [User, Blog],
     })
-        .then((commentsData) => {
-            res.json(commentsData);
+        .then((commentData) => {
+            res.json(commentData);
         })
         .catch((err) => {
             console.log(err);
@@ -34,14 +34,14 @@ router.post("/", (req, res) => {
         return res.status(403).json({ msg: "You must login first." });
     }
     console.log(req.body);
-    Comments.create({
+    Comment.create({
         text: req.body.comments,
         UserId: req.session.userId,
         BlogId: req.session.blogId,
         email: req.session.email,
     })
-        .then((commentsData) => {
-            res.json(commentsData);
+        .then((commentData) => {
+            res.json(commentData);
         })
         .catch((err) => {
             console.log(err);
@@ -55,24 +55,24 @@ router.delete("/:id", (req, res) => {
         return res.status(403).json({ msg: "You must login first." });
     }
     console.log(req.body);
-    Comments.findByPk(req.params.id)
-        .then((commentsData) => {
-            if (!commentsData) {
+    Comment.findByPk(req.params.id)
+        .then((commentData) => {
+            if (!commentData) {
                 return res
                     .status(404)
                     .json({ msg: "No comment exists under that id." });
-            } else if (commentsData.UserId !== req.session.userId) {
+            } else if (commentData.UserId !== req.session.userId) {
                 return res
                     .status(403)
                     .json({ msg: "That comment does not belong to you." });
             }
-            Comments.destroy({
+            Comment.destroy({
                 where: {
                     id: req.params.id,
                 },
             })
-                .then((commentsData) => {
-                    res.json(commentsData);
+                .then((commentData) => {
+                    res.json(commentData);
                 })
                 .catch((err) => {
                     console.log(err);
@@ -88,28 +88,32 @@ router.delete("/:id", (req, res) => {
 //update comment by id
 router.put("/:id", (req, res) => {
     if (!req.session.userId) {
-        return res.status(403).json({
-            msg: "You must login first.",
-        });
+        return res.status(403).json({ msg: "You must login first." });
     }
-    Comments.findByPk(req.params.id).then((commentsData) => {
-        if (!commentsData) {
-            return res
-                .status(404)
-                .json({ msg: "No comment exists under that id." });
-        } else if (commentsData.UserId !== req.session.userId) {
-            return res
-                .status(403)
-                .json({ msg: "That comment does not belong to you." });
-        }
-    });
-    Comments.update(req.body, {
-        where: {
-            id: req.params.id,
-        },
-    })
-        .then((commentsData) => {
-            res.json(commentsData);
+    console.log(req.body);
+    Comment.findByPk(req.params.id)
+        .then((commentData) => {
+            if (!commentData) {
+                return res
+                    .status(404)
+                    .json({ msg: "No comment exists under that id." });
+            } else if (commentData.UserId !== req.session.userId) {
+                return res
+                    .status(403)
+                    .json({ msg: "That comment does not belong to you." });
+            }
+            Comment.update(req.body, {
+                where: {
+                    id: req.params.id,
+                },
+            })
+                .then((commentData) => {
+                    res.json(commentData);
+                })
+                .catch((err) => {
+                    console.log(err);
+                    res.status(500).json({ msg: "An error has occured.", err });
+                });
         })
         .catch((err) => {
             console.log(err);

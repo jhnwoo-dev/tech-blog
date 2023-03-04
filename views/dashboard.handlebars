@@ -1,20 +1,23 @@
 <h1>Welcome Back, {{email}}!</h1>
-<h2>Add A Blog Post</h2>
-<form id="new-blog-form">
-    <input type="text" id="blog-title" placeholder="New Blog Title">
-    <textarea name="text" id="blog-text"placeholder="New Blog Text"></textarea>
-    <button id="new-blog-submit" type="submit">Post!</button>
-</form>
+<h3>Add A Blog Post</h3>
 
-<h2>My Blog Posts</h2>
-{{#each Blogs}}
-    <section class="blog-box">
-    <h3>{{User.username}}: {{blogTitle}}</h3>
-        <p>{{blogText}}</p>
+<section>
+<form class="blog-form d-flex flex-column justify-content-left spacing">
+    <input type="text" id="title" placeholder="New Blog Title">
+    <textarea name="text" id="text" placeholder="New Blog Text"></textarea>
+    <button class="blog-btn" type="submit">Post!</button>
+</form>
+</section>
+
+<h3>My Blog Posts</h3>
+{{#each allBlogs}}
+    <section class="blog-box" data-id="{{id}}">
+    <h4>{{User.email}}: {{title}}</h4>
+        <p>{{text}}</p>
         <p>{{createdAt}}</p>
-    <h4>Comments:</h4>
+    <h5>Comments:</h5>
     {{#each Comments}}
-        <p>{{username}} - {{createdAt}}</p>
+        <p>{{email}} - {{createdAt}}</p>
         <p>{{text}}</p>
     {{/each}}
 </section>

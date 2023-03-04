@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { User, Blogs, Comments } = require("../models");
+const { User, Blog, Comment } = require("../models");
 const bcrypt = require("bcrypt");
 
 //finds all users
@@ -24,7 +24,7 @@ router.get("/logout", (req, res) => {
 //finds user by id
 router.get("/:id", (req, res) => {
     User.findByPk(req.params.id, {
-        include: [Blogs],
+        include: [Blog],
     })
         .then((userData) => {
             res.json(userData);

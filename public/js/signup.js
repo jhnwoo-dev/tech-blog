@@ -1,8 +1,8 @@
-document.querySelector("#signupForm").addEventListener("submit", (e) => {
+document.querySelector("#signup-form").addEventListener("submit", (e) => {
     e.preventDefault();
     const signupObj = {
-        email: document.querySelector("#signupEmail").value,
-        password: document.querySelector("#signupPassword").value,
+        email: document.querySelector("#signup-email").value,
+        password: document.querySelector("#signup-password").value,
     };
     fetch("/api/users/", {
         method: "POST",

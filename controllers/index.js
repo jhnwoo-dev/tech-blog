@@ -5,10 +5,10 @@ const userRoutes = require("./userController");
 router.use("/api/users", userRoutes);
 
 const blogRoutes = require("./blogsController");
-router.use("/api/blogs", blogRoutes);
+router.use("/api/blog", blogRoutes);
 
 const commentRoutes = require("./commentsController");
-router.use("/api/comments", commentRoutes);
+router.use("/api/comment", commentRoutes);
 
 const frontEndRoutes = require("./frontEndController");
 router.use("/", frontEndRoutes);

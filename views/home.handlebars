@@ -1,10 +1,25 @@
 <h1>Homepage</h1>
-<h2>All Blogs</h2>
 
+{{#if email}}
+    <h3>Hello, <a href="/dashboard">{{email}}!</a></h3>
+    <form class="blog-form d-flex flex-column justify-content-left spacing">
+        <input type="text" id="title" placeholder="New Blog Title">
+        <textarea name="text" id="text" placeholder="New Blog Text"></textarea>
+        <button class="blog-btn" type="submit">Post!</button>
+    </form>
+{{/if}}
 
 {{#each allBlogs}}
-<section class="blog-box">
-    <h2>{{User.email}} Blogs</h2>
-    <p>  text: {{blog}}</p>
+<section class="blog-box" data-id="{{id}}">
+    <h4>{{User.email}}: {{title}}</h4>
+    <p>{{text}}</p>
+    <p>{{createdAt}}</p>
+     <h5>Comments:</h5>
+     {{#each Comments}}
+        <p>{{username}} - {{createdAt}}</p>
+        <p>{{text}}</p>
+    {{/each}}
 </section>
 {{/each}}
+
+<script src="/js/home.js"></script>

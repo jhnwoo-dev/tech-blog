@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const { User, Blogs, Comments } = require("../models");
+const { User, Blog, Comment } = require("../models");
 
 //find all blogs
 router.get("/", (req, res) => {
-    Blogs.findAll({ include: [User, Comments] })
-        .then((blogsData) => {
-            res.json(blogsData);
+    Blog.findAll({ include: [User, Comment] })
+        .then((blogData) => {
+            res.json(blogData);
         })
         .catch((err) => {
             console.log(err);
@@ -16,11 +16,11 @@ router.get("/", (req, res) => {
 
 //find blog by id
 router.get("/:id", (req, res) => {
-    Blogs.findByPk(req.params.id, {
-        include: [User, Comments],
+    Blog.findByPk(req.params.id, {
+        include: [User, Comment],
     })
-        .then((blogsData) => {
-            res.json(blogsData);
+        .then((blogData) => {
+            res.json(blogData);
         })
         .catch((err) => {
             console.log(err);
@@ -33,14 +33,13 @@ router.post("/", (req, res) => {
     if (!req.session.userId) {
         return res.status(403).json({ msg: "You must login first." });
     }
-    console.log(req.body);
-    Blogs.create({
-        blogTitle: req.body.blogTitle,
-        blogText: req.body.blogText,
+    Blog.create({
+        title: req.body.title,
+        text: req.body.text,
         UserId: req.session.userId,
     })
-        .then((blogsData) => {
-            res.json(blogsData);
+        .then((blogData) => {
+            res.json(blogData);
         })
         .catch((err) => {
             console.log(err);
@@ -53,25 +52,24 @@ router.delete("/:id", (req, res) => {
     if (!req.session.userId) {
         return res.status(403).json({ msg: "You must login first." });
     }
-    console.log(req.body);
-    Blogs.findByPk(req.params.id)
-        .then((blogsData) => {
-            if (!blogsData) {
+    Blog.findByPk(req.params.id)
+        .then((blogData) => {
+            if (!blogData) {
                 return res
                     .status(404)
                     .json({ msg: "No blog post exists under that id." });
-            } else if (blogsData.UserId !== req.session.userId) {
+            } else if (blogData.UserId !== req.session.userId) {
                 return res
                     .status(403)
                     .json({ msg: "That blog post does not belong to you." });
             }
-            Blogs.destroy({
+            Blog.destroy({
                 where: {
                     id: req.params.id,
                 },
             })
-                .then((blogsData) => {
-                    res.json(blogsData);
+                .then((blogData) => {
+                    res.json(blogData);
                 })
                 .catch((err) => {
                     console.log(err);
@@ -87,27 +85,27 @@ router.delete("/:id", (req, res) => {
 // update blog
 router.put("/:id", (req, res) => {
     if (!req.session.userId) {
-        return res.status(403).json({ msg: "login first post" });
+        return res.status(403).json({ msg: "You must login first." });
     }
     console.log(req.body);
-    Blogs.findByPk(req.params.id)
-        .then((blogsData) => {
-            if (!blogsData) {
+    Blog.findByPk(req.params.id)
+        .then((blogData) => {
+            if (!blogData) {
                 return res
                     .status(404)
                     .json({ msg: "No blog post exists under that id." });
-            } else if (blogsData.UserId !== req.session.userId) {
+            } else if (blogData.UserId !== req.session.userId) {
                 return res
                     .status(403)
                     .json({ msg: "That blog post does not belong to you." });
             }
-            Blogs.update(req.body, {
+            Blog.update(req.body, {
                 where: {
                     id: req.params.id,
                 },
             })
-                .then((blogsData) => {
-                    res.json(blogsData);
+                .then((blogData) => {
+                    res.json(blogData);
                 })
                 .catch((err) => {
                     console.log(err);
