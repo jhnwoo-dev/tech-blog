@@ -1,0 +1,23 @@
+<h1>Welcome Back, {{email}}!</h1>
+<h2>Add A Blog Post</h2>
+<form id="new-blog-form">
+    <input type="text" id="blog-title" placeholder="New Blog Title">
+    <textarea name="text" id="blog-text"placeholder="New Blog Text"></textarea>
+    <button id="new-blog-submit" type="submit">Post!</button>
+</form>
+
+<h2>My Blog Posts</h2>
+{{#each Blogs}}
+    <section class="blog-box">
+    <h3>{{User.username}}: {{blogTitle}}</h3>
+        <p>{{blogText}}</p>
+        <p>{{createdAt}}</p>
+    <h4>Comments:</h4>
+    {{#each Comments}}
+        <p>{{username}} - {{createdAt}}</p>
+        <p>{{text}}</p>
+    {{/each}}
+</section>
+{{/each}}
+
+<script src="/js/dashboard.js"></script>

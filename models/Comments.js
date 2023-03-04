@@ -1,17 +1,23 @@
 const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../config/connection");
 
-class Blogs extends Model {}
+class Comments extends Model {}
 
-Blogs.init(
+Comments.init(
     {
-        blogTitle: {
+        text: {
             type: DataTypes.STRING,
             allowNull: false,
+            validate: {
+                len: [1, 240],
+            },
         },
-        blogText: {
+        email: {
             type: DataTypes.STRING,
             allowNull: false,
+            validate: {
+                len: [1, 240],
+            },
         },
     },
     {
@@ -19,4 +25,4 @@ Blogs.init(
     }
 );
 
-module.exports = Blogs;
+module.exports = Comments;

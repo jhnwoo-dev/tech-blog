@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const { User, Blogs } = require("../models");
+const { User, Blogs, Comments } = require("../models");
 const bcrypt = require("bcrypt");
 
+//finds all users
 router.get("/", (req, res) => {
     User.findAll()
         .then((userData) => {
@@ -10,15 +11,17 @@ router.get("/", (req, res) => {
         })
         .catch((err) => {
             console.log(err);
-            res.status(500).json({ msg: "Uh oh!", err });
+            res.status(500).json({ msg: "An error has occured.", err });
         });
 });
 
+//logs user out
 router.get("/logout", (req, res) => {
     req.session.destroy();
     res.send("Logged out");
 });
 
+//finds user by id
 router.get("/:id", (req, res) => {
     User.findByPk(req.params.id, {
         include: [Blogs],
@@ -28,10 +31,11 @@ router.get("/:id", (req, res) => {
         })
         .catch((err) => {
             console.log(err);
-            res.status(500).json({ msg: "Uh oh!", err });
+            res.status(500).json({ msg: "An error has occured.", err });
         });
 });
 
+//creates new user
 router.post("/", (req, res) => {
     console.log(req.body);
     User.create({
@@ -45,9 +49,11 @@ router.post("/", (req, res) => {
         })
         .catch((err) => {
             console.log(err);
-            res.status(500).json({ msg: "Uh oh!", err });
+            res.status(500).json({ msg: "An error has occured.", err });
         });
 });
+
+//user login verification
 router.post("/login", (req, res) => {
     User.findOne({
         where: {
@@ -73,7 +79,7 @@ router.post("/login", (req, res) => {
         })
         .catch((err) => {
             console.log(err);
-            res.status(500).json({ msg: "Uh oh!", err });
+            res.status(500).json({ msg: "An error has occured.", err });
         });
 });
 

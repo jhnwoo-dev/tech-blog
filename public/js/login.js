@@ -13,9 +13,13 @@ document.querySelector("#loginForm").addEventListener("submit", (e) => {
         },
     }).then((res) => {
         if (res.ok) {
-            location.href = "/profile";
+            location.href = "/dashboard";
         } else {
-            alert("An error has occured");
+            alert("An error has occured.");
         }
     });
+});
+
+document.querySelector("#signup-redirect").addEventListener("click", () => {
+    location.href = "/signup";
 });

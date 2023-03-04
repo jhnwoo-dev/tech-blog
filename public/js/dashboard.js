@@ -1,7 +1,8 @@
 document.querySelector("#new-blog-form").addEventListener("submit", (e) => {
     e.preventDefault();
     const blogsObj = {
-        blog: document.querySelector("#blog-input").value,
+        blogTitle: document.querySelector("#blog-title").value,
+        blogText: document.querySelector("#blog-text").value,
     };
     console.log(blogsObj);
     fetch("/api/blogs", {
@@ -13,8 +14,6 @@ document.querySelector("#new-blog-form").addEventListener("submit", (e) => {
     }).then((res) => {
         if (res.ok) {
             location.reload();
-        } else {
-            alert("An error has occured");
         }
     });
 });

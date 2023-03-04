@@ -2,11 +2,11 @@ const express = require("express");
 const router = express.Router();
 const { User, Blogs, Comments } = require("../models");
 
-//find all blogs
+//get all comments
 router.get("/", (req, res) => {
-    Blogs.findAll({ include: [User, Comments] })
-        .then((blogsData) => {
-            res.json(blogsData);
+    Comments.findAll()
+        .then((commentsData) => {
+            res.json(commentsData);
         })
         .catch((err) => {
             console.log(err);
@@ -14,13 +14,13 @@ router.get("/", (req, res) => {
         });
 });
 
-//find blog by id
+//get comment by id
 router.get("/:id", (req, res) => {
-    Blogs.findByPk(req.params.id, {
-        include: [User, Comments],
+    Comments.findByPk(req.params.id, {
+        include: [User, Blogs],
     })
-        .then((blogsData) => {
-            res.json(blogsData);
+        .then((commentsData) => {
+            res.json(commentsData);
         })
         .catch((err) => {
             console.log(err);
@@ -28,19 +28,20 @@ router.get("/:id", (req, res) => {
         });
 });
 
-//create new blog
+//create new comment
 router.post("/", (req, res) => {
     if (!req.session.userId) {
         return res.status(403).json({ msg: "You must login first." });
     }
     console.log(req.body);
-    Blogs.create({
-        blogTitle: req.body.blogTitle,
-        blogText: req.body.blogText,
+    Comments.create({
+        text: req.body.comments,
         UserId: req.session.userId,
+        BlogId: req.session.blogId,
+        email: req.session.email,
     })
-        .then((blogsData) => {
-            res.json(blogsData);
+        .then((commentsData) => {
+            res.json(commentsData);
         })
         .catch((err) => {
             console.log(err);
@@ -48,30 +49,30 @@ router.post("/", (req, res) => {
         });
 });
 
-//delete blog
+//delete comment by id
 router.delete("/:id", (req, res) => {
     if (!req.session.userId) {
         return res.status(403).json({ msg: "You must login first." });
     }
     console.log(req.body);
-    Blogs.findByPk(req.params.id)
-        .then((blogsData) => {
-            if (!blogsData) {
+    Comments.findByPk(req.params.id)
+        .then((commentsData) => {
+            if (!commentsData) {
                 return res
                     .status(404)
-                    .json({ msg: "No blog post exists under that id." });
-            } else if (blogsData.UserId !== req.session.userId) {
+                    .json({ msg: "No comment exists under that id." });
+            } else if (commentsData.UserId !== req.session.userId) {
                 return res
                     .status(403)
-                    .json({ msg: "That blog post does not belong to you." });
+                    .json({ msg: "That comment does not belong to you." });
             }
-            Blogs.destroy({
+            Comments.destroy({
                 where: {
                     id: req.params.id,
                 },
             })
-                .then((blogsData) => {
-                    res.json(blogsData);
+                .then((commentsData) => {
+                    res.json(commentsData);
                 })
                 .catch((err) => {
                     console.log(err);
@@ -84,35 +85,31 @@ router.delete("/:id", (req, res) => {
         });
 });
 
-// update blog
+//update comment by id
 router.put("/:id", (req, res) => {
     if (!req.session.userId) {
-        return res.status(403).json({ msg: "login first post" });
+        return res.status(403).json({
+            msg: "You must login first.",
+        });
     }
-    console.log(req.body);
-    Blogs.findByPk(req.params.id)
-        .then((blogsData) => {
-            if (!blogsData) {
-                return res
-                    .status(404)
-                    .json({ msg: "No blog post exists under that id." });
-            } else if (blogsData.UserId !== req.session.userId) {
-                return res
-                    .status(403)
-                    .json({ msg: "That blog post does not belong to you." });
-            }
-            Blogs.update(req.body, {
-                where: {
-                    id: req.params.id,
-                },
-            })
-                .then((blogsData) => {
-                    res.json(blogsData);
-                })
-                .catch((err) => {
-                    console.log(err);
-                    res.status(500).json({ msg: "An error has occured.", err });
-                });
+    Comments.findByPk(req.params.id).then((commentsData) => {
+        if (!commentsData) {
+            return res
+                .status(404)
+                .json({ msg: "No comment exists under that id." });
+        } else if (commentsData.UserId !== req.session.userId) {
+            return res
+                .status(403)
+                .json({ msg: "That comment does not belong to you." });
+        }
+    });
+    Comments.update(req.body, {
+        where: {
+            id: req.params.id,
+        },
+    })
+        .then((commentsData) => {
+            res.json(commentsData);
         })
         .catch((err) => {
             console.log(err);

@@ -4,8 +4,7 @@ document.querySelector("#signupForm").addEventListener("submit", (e) => {
         email: document.querySelector("#signupEmail").value,
         password: document.querySelector("#signupPassword").value,
     };
-    console.log(signupObj);
-    fetch("/api/users", {
+    fetch("/api/users/", {
         method: "POST",
         body: JSON.stringify(signupObj),
         headers: {
@@ -13,9 +12,9 @@ document.querySelector("#signupForm").addEventListener("submit", (e) => {
         },
     }).then((res) => {
         if (res.ok) {
-            location.href = "/profile";
+            location.href = "/dashboard";
         } else {
-            alert("An error has occured");
+            alert("An error has occured.");
         }
     });
 });

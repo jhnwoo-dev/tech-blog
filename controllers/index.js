@@ -7,6 +7,9 @@ router.use("/api/users", userRoutes);
 const blogRoutes = require("./blogsController");
 router.use("/api/blogs", blogRoutes);
 
+const commentRoutes = require("./commentsController");
+router.use("/api/comments", commentRoutes);
+
 const frontEndRoutes = require("./frontEndController");
 router.use("/", frontEndRoutes);
 

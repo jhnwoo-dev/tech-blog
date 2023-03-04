@@ -33,3 +33,12 @@ h1{
     align-items: center;
     margin: 10px;
 }
+
+#new-blog-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: left;
+    margin: 10px;
+    padding: 10px;
+}
